@@ -1,0 +1,10 @@
+data:
+    driverClass: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.39.0.150:3306/enn_iot?useUnicode=true&characterEncoding=UTF8&useSSL=false
+    username: root
+    password: se-mysql
+    maxActive: 30
+    maxWaitMillis: 5000
+    testOnBorrow: true
+    testWhileIdle: true
+    testOnReturn: true
