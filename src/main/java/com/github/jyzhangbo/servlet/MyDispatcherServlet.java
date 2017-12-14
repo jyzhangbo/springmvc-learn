@@ -69,6 +69,8 @@ public class MyDispatcherServlet extends HttpServlet {
 
 
   /**
+   * 扫描包下的所有类
+   * 
    * @param packageName
    */
   private void doScan(String packageName) {
@@ -77,6 +79,7 @@ public class MyDispatcherServlet extends HttpServlet {
 
     for (File f : file.listFiles()) {
       if (f.isDirectory()) {
+        // 如果是目录，则递归扫描
         doScan(packageName + "." + f.getName());
       } else {
         if (f.getName().endsWith(".class")) {
@@ -90,7 +93,7 @@ public class MyDispatcherServlet extends HttpServlet {
 
 
   /**
-   * 
+   * 初始化ioc容器
    */
   private void initIocContent() {
     try {
@@ -108,7 +111,7 @@ public class MyDispatcherServlet extends HttpServlet {
         // 将实例化后的对象放进ioc容器中
         iocContent.put(className, cls.newInstance());
       }
-      System.out.println("Ioc容器初始化完成" + Json.toJson(iocContent));
+      System.out.println("Ioc容器初始化完成");
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -116,7 +119,7 @@ public class MyDispatcherServlet extends HttpServlet {
 
 
   /**
-   * 
+   * 初始化依赖注入
    */
   private void initAutowired() {
 
@@ -125,13 +128,14 @@ public class MyDispatcherServlet extends HttpServlet {
     }
 
     for (Entry<String, Object> entry : iocContent.entrySet()) {
-
+      // 获取该类的所有全局变量
       Field[] fields = entry.getValue().getClass().getDeclaredFields();
       for (Field field : fields) {
         if (!field.isAnnotationPresent(MyAutowired.class)) {
           continue;
         }
         String name = field.getName();
+        // 私有变量也强制赋值
         field.setAccessible(true);
         try {
           field.set(entry.getValue(), iocContent.get(name));
@@ -146,7 +150,7 @@ public class MyDispatcherServlet extends HttpServlet {
 
 
   /**
-   * 
+   * 初始化handlermapping
    */
   private void initHandlerMapping() {
     if (classes.isEmpty()) {
@@ -159,6 +163,7 @@ public class MyDispatcherServlet extends HttpServlet {
         String url = "";
 
         if (clazz.isAnnotationPresent(MyRequestMapping.class)) {
+          // 获取类上的myrequestmapping
           MyRequestMapping annotation = clazz.getAnnotation(MyRequestMapping.class);
           String value = annotation.value();
           if (!"".equals(value)) {
@@ -168,6 +173,7 @@ public class MyDispatcherServlet extends HttpServlet {
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {
           if (method.isAnnotationPresent(MyRequestMapping.class)) {
+            // 获取方法上的myrequestmapping
             MyRequestMapping annotation = method.getAnnotation(MyRequestMapping.class);
             String value = annotation.value();
             url = url + value;
@@ -180,6 +186,8 @@ public class MyDispatcherServlet extends HttpServlet {
         e.printStackTrace();
       }
     }
+
+    System.out.println("handlermapping初始化完成:" + Json.toJson(handlerMapping));
   }
 
 
@@ -188,6 +196,8 @@ public class MyDispatcherServlet extends HttpServlet {
   }
 
   /**
+   * 处理请求
+   * 
    * @param request
    * @param response
    * @throws IOException
@@ -198,9 +208,10 @@ public class MyDispatcherServlet extends HttpServlet {
       return;
     }
 
+    // 获取请求地址
     String path = request.getRequestURI();
-    System.out.println(path);
 
+    // 获取方法的信息
     HandlerModel model = handlerMapping.get(path);
     if (model == null) {
       response.getWriter().write("404 NOT FOUND");
