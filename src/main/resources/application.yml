@@ -1,6 +1,10 @@
 spring:
     profiles:
-      active: @profiles_active@
+        active: @profiles_active@
+    mvc:
+       view: 
+          prefix: /WEB-INF/pages/
+          suffix: .jsp
 server:
     port: 8980
     ssl: 

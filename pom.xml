@@ -38,6 +38,28 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
+		
+		<!-- jsp支持 -->
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+		 <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        
+		<!-- <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency> -->
+        
 		<!-- 数据库连接池 -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -123,11 +145,22 @@
 					<include>**/docref/*.*</include>
 				</includes>
 			</resource>
+			 <!-- 打包时将jsp文件拷贝到META-INF目录下-->  
+            <resource>  
+                <!-- 指定resources插件处理哪个目录下的资源文件 -->  
+                <directory>src/main/webapp</directory>  
+                <!--注意此次必须要放在此目录下才能被访问到-->  
+                <targetPath>META-INF/resources</targetPath>  
+                <includes>  
+                    <include>**/**</include>  
+                </includes>  
+            </resource>  
 		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>1.4.2.RELEASE</version>
 				<configuration>
 					<fork>true</fork><!-- 如果没有该项配置，肯呢个devtools不会起作用，即应用不会restart -->
 				</configuration>
