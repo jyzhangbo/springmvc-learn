@@ -35,7 +35,7 @@ public class HelloController {
     return "hello";
   }
 
-  @RequestMapping(value = "/admin", method = RequestMethod.POST)
+  @RequestMapping(value = "/admin", method = RequestMethod.GET)
   public String admin(ModelMap model) {
     model.addAttribute("name", "admin");
     return "admin";

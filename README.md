@@ -1,5 +1,16 @@
 ## springmvc contact
 
+#### springboob和security结合
+1. 导入引用的jar包
+
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+2. 添加WebSecurityConfig，配置相关信息
+
+
 #### 在spingboot中使用jsp
 1. 在pom.xm中添加依赖
 
