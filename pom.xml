@@ -5,7 +5,7 @@
 	<groupId>com.github.jyzhangbo</groupId>
 	<artifactId>springmvc-learn</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>springmvc-learn</name>
 	<url>http://maven.apache.org</url>
@@ -55,10 +55,10 @@
             <artifactId>jstl</artifactId>
         </dependency>
         
-		<!-- <dependency>
+		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency> -->
+        </dependency>
         
 		<!-- 数据库连接池 -->
 		<dependency>
@@ -86,34 +86,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>cn.ennwifi</groupId>
-						<artifactId>testplugin</artifactId>
-						<version>0.0.1</version>
-						<executions>
-							<!-- 生成数据库BEAN -->
-							<execution>
-								<id>genbean</id>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>generate</goal>
-								</goals>
-								<configuration>
-									<path>${project.basedir}/src/main/java</path>
-									<driver>com.mysql.jdbc.Driver</driver>
-									<jdbcurl>jdbc:mysql://10.39.10.47:3306/Station_2020</jdbcurl>
-									<user>SmartPV</user>
-									<pwd>SmartPV123</pwd>
-									<packageName>cn.ennwifi.smartpv.data.repository</packageName>
-									<interfaceName>TableInfo</interfaceName>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 		<profile>
 			<id>pro</id>
@@ -145,22 +117,11 @@
 					<include>**/docref/*.*</include>
 				</includes>
 			</resource>
-			 <!-- 打包时将jsp文件拷贝到META-INF目录下-->  
-            <resource>  
-                <!-- 指定resources插件处理哪个目录下的资源文件 -->  
-                <directory>src/main/webapp</directory>  
-                <!--注意此次必须要放在此目录下才能被访问到-->  
-                <targetPath>META-INF/resources</targetPath>  
-                <includes>  
-                    <include>**/**</include>  
-                </includes>  
-            </resource>  
 		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>1.4.2.RELEASE</version>
 				<configuration>
 					<fork>true</fork><!-- 如果没有该项配置，肯呢个devtools不会起作用，即应用不会restart -->
 				</configuration>
